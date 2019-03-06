@@ -1,7 +1,7 @@
 {
   "name": "@robb_j/static-page",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate a html page from markdown and serve it over http with docker",
   "main": "src/index.js",
   "repository": "robb-j/node-base",
