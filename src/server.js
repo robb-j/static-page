@@ -75,7 +75,11 @@ const injectPageStructure = () => (node, file) => {
           'Page rendered with ',
           h(
             'a',
-            { href: 'https://github.com/robb-j/static-page' },
+            {
+              href: 'https://github.com/robb-j/static-page',
+              target: '_blank',
+              rel: 'noopener'
+            },
             'robb-j/static-page'
           )
         ])
