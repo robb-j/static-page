@@ -1,0 +1,39 @@
+$body-family: 'Avenir', Helvetica, Arial, sans-serif
+
+
+@import "bulma/sass/utilities/_all.sass"
+@import "bulma/sass/base/_all.sass"
+
+@import "bulma/sass/elements/container.sass"
+@import "bulma/sass/elements/content.sass"
+@import "bulma/sass/elements/title.sass"
+
+@import "bulma/sass/layout/section.sass"
+@import "bulma/sass/layout/hero.sass"
+@import "bulma/sass/layout/footer.sass"
+
+.page
+  display: flex
+  flex-direction: column
+  min-height: 100vh
+  .page-expand
+    flex: 1
+
+.footer
+  padding: 3rem 1rem 2rem
+  color: $grey
+  font-size: 0.95rem
+  font-weight: 600
+  p
+    margin-bottom: 0.5em
+  a
+    color: $grey-dark
+    text-decoration: underline $grey-lighter
+  .links
+    *:not(:last-child)
+      margin-right: 0.5em
+      border-right: 1px solid $grey
+      padding-right: 0.5em
+  .version
+    user-select: all
+    color: $grey
