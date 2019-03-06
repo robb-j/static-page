@@ -9,13 +9,10 @@ This repo is a [node.js](https://nodejs.org) app which compiles assets with
 [bulma](https://www.npmjs.com/package/bulma) then deploys them with
 [docker](https://www.docker.com/).
 
-## Table of contents
-
 <!-- toc-head -->
 
 ## Table of Contents
 
-- [Table of contents](#table-of-contents)
 - [An example](#an-example)
 - [Customisation](#customisation)
   - [Frontmatter](#frontmatter)
@@ -51,7 +48,7 @@ Then you want to quickly deploy it using docker:
 docker run -it --rm \
   -v `pwd`/content.md:/app/page.md
   -p 3000:3000
-  robb-j/static-page
+  robb-j/static-page:1.1.0
 ```
 
 Then all you have to do is visit `http://localhost:3000`
@@ -113,7 +110,7 @@ and also ignores files using [.prettierignore](/.prettierignore).
 This repo uses an npm `postversion` script to build, tag and push the docker image to dockerhub.
 Use the `npm version` command to create a new version and it will build and
 push a new docker image with that version.
-This measn that all images are [semantically versioned](https://semver.org/).
+This means that all images are [semantically versioned](https://semver.org/).
 The `:latest` docker tag is not used.
 
 ```bash
