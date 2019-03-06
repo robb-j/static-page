@@ -105,6 +105,7 @@ function renderMarkdown(file) {
       .use(injectPageStructure)
       .use(wrapInHtmlDoc, {
         css: ['/style.css'],
+        js: ['/script.js'],
         link: [{ rel: 'icon', href: '/favicon.png' }]
       })
       .use(updateDocumentTitle)
@@ -142,8 +143,11 @@ async function compileSass(file, config) {
     // Load the markdown page as a virtual file
     const page = vfile.readSync(resolvePath('../page.md'))
 
-    // Load the favicon
-    const favicon = await readFile(resolvePath('favicon.png'))
+    // Load static assets
+    const [favicon, script] = await Promise.all([
+      readFile(resolvePath('favicon.png')),
+      readFile(resolvePath('script.js'))
+    ])
 
     // Render markdown to html
     process.stdout.write('Rendering html')
@@ -172,6 +176,10 @@ async function compileSass(file, config) {
         case '/favicon.png': {
           res.setHeader('Content-Type', 'image/png')
           return res.end(favicon)
+        }
+        case '/script.js': {
+          res.setHeader('Content-Type', 'application/javascript')
+          return res.end(script)
         }
         default: {
           res.statusCode = '404'
