@@ -28,7 +28,7 @@ function find(node, predicate) {
   for (let child of node.children) {
     if (predicate(child)) return child
 
-    let nested = find(child, predicate)
+    const nested = find(child, predicate)
     if (nested) return nested
   }
   return null
@@ -41,7 +41,7 @@ const extractFrontmatter = () => (node, file) => {
     if (node.children[0].type !== 'yaml') {
       throw new Error('Frontmatter is missing')
     }
-    let yaml = Yaml.parse(node.children[0].value)
+    const yaml = Yaml.parse(node.children[0].value)
 
     if (typeof yaml.title !== 'string') throw new Error('No title')
 
@@ -86,7 +86,7 @@ const injectPageStructure = () => (node, file) => {
 
 // A plugin to update `rehype-document`'s title with a value from the frontmatter
 const updateDocumentTitle = () => (node, file) => {
-  let title = find(node, node => node.tagName === 'title')
+  const title = find(node, node => node.tagName === 'title')
   if (title && title.children[0]) {
     title.children[0].value = file.data.matter.title
   }
@@ -94,7 +94,7 @@ const updateDocumentTitle = () => (node, file) => {
 
 /** Render a markdown file to html, extracting yaml and wrapping in a bulma page */
 function renderMarkdown(file) {
-  let start = Date.now()
+  const start = Date.now()
   return new Promise((resolve, reject) =>
     unified()
       .use(parseMarkdown)
@@ -103,11 +103,14 @@ function renderMarkdown(file) {
       .use(addToc)
       .use(mdToHtml)
       .use(injectPageStructure)
-      .use(wrapInHtmlDoc, { css: ['/style.css'] })
+      .use(wrapInHtmlDoc, {
+        css: ['/style.css'],
+        link: [{ rel: 'icon', href: '/favicon.png' }]
+      })
       .use(updateDocumentTitle)
       .use(toHtmlString)
       .process(file, (err, file) => {
-        let duration = Date.now() - start
+        const duration = Date.now() - start
 
         if (err) reject(err)
         else resolve([file.data.matter, file.toString(), duration])
@@ -137,7 +140,10 @@ async function compileSass(file, config) {
 ;(async () => {
   try {
     // Load the markdown page as a virtual file
-    let page = vfile.readSync(resolvePath('../page.md'))
+    const page = vfile.readSync(resolvePath('../page.md'))
+
+    // Load the favicon
+    const favicon = await readFile(resolvePath('favicon.png'))
 
     // Render markdown to html
     process.stdout.write('Rendering html')
@@ -146,23 +152,26 @@ async function compileSass(file, config) {
 
     // Compile sass into css
     process.stdout.write('Compilling sass')
-    let [css, t2] = await compileSass(resolvePath('styles.sass'), config)
+    const [css, t2] = await compileSass(resolvePath('styles.sass'), config)
     process.stdout.write(` (${formatMilliseconds(t2)})\n`)
 
     // Create a http server to serve the files
-    let server = createServer((req, res) => {
+    const server = createServer((req, res) => {
+      res.statusCode = 200
       switch (req.url) {
         case '/':
         case '/index':
         case '/index.html': {
-          res.statusCode = 200
           res.setHeader('Content-Type', 'text/html')
           return res.end(html)
         }
         case '/style.css': {
-          res.statusCode = 200
           res.setHeader('Content-Type', 'text/css')
           return res.end(css)
+        }
+        case '/favicon.png': {
+          res.setHeader('Content-Type', 'image/png')
+          return res.end(favicon)
         }
         default: {
           res.statusCode = '404'

@@ -17,6 +17,9 @@ This repo is a [node.js](https://nodejs.org) app which compiles assets with
 
 - [Table of contents](#table-of-contents)
 - [An example](#an-example)
+- [Customisation](#customisation)
+  - [Frontmatter](#frontmatter)
+  - [Favicon](#favicon)
 - [Development](#development)
   - [Setup](#setup)
   - [Commands](#commands)
@@ -52,6 +55,20 @@ docker run -it --rm \
 ```
 
 Then all you have to do is visit `http://localhost:3000`
+
+## Customisation
+
+### Frontmatter
+
+There are currently 3 values you can set in the frontmatter
+
+- `title` – **required** The title of the page
+- `subtitle` – An optional subtitle of the page
+- `theme` – A css colour for the theme of the page
+
+### Favicon
+
+You can override the favicon by docker bind-mounting it to `/app/src/favicon.png`.
 
 ## Development
 
