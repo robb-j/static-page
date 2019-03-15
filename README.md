@@ -119,6 +119,10 @@ npm version # major | minor | patch
 git push --tags
 ```
 
+## Future work
+
+- Watch for file changes and regenerate the in-memory page
+
 ---
 
 > This repo was setup with [robb-j/node-base](https://github.com/robb-j/node-base)
