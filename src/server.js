@@ -63,12 +63,12 @@ const injectPageStructure = () => (node, file) => {
         h('.hero-body', [
           h('.container', [
             h('h1.title', title),
-            subtitle && h('h2.subtitle', subtitle)
-          ])
-        ])
+            subtitle && h('h2.subtitle', subtitle),
+          ]),
+        ]),
       ]),
       h('section.section.page-expand', [
-        h('.container', [h('.content', [content])])
+        h('.container', [h('.content', [content])]),
       ]),
       h('footer.footer.has-text-centered.has-text-monospace', [
         h('.container', [
@@ -78,19 +78,19 @@ const injectPageStructure = () => (node, file) => {
             {
               href: 'https://github.com/robb-j/static-page',
               target: '_blank',
-              rel: 'noopener'
+              rel: 'noopener',
             },
             'robb-j/static-page'
-          )
-        ])
-      ])
-    ])
+          ),
+        ]),
+      ]),
+    ]),
   ]
 }
 
 // A plugin to update `rehype-document`'s title with a value from the frontmatter
 const updateDocumentTitle = () => (node, file) => {
-  const title = find(node, node => node.tagName === 'title')
+  const title = find(node, (node) => node.tagName === 'title')
   if (title && title.children[0]) {
     title.children[0].value = file.data.matter.title
   }
@@ -110,7 +110,7 @@ function renderMarkdown(file) {
       .use(wrapInHtmlDoc, {
         css: ['/style.css'],
         js: ['/script.js'],
-        link: [{ rel: 'icon', href: '/favicon.png' }]
+        link: [{ rel: 'icon', href: '/favicon.png' }],
       })
       .use(updateDocumentTitle)
       .use(toHtmlString)
@@ -131,7 +131,7 @@ async function compileSass(file, config) {
   const options = {
     data,
     indentedSyntax: true,
-    includePaths: [resolvePath('../node_modules')]
+    includePaths: [resolvePath('../node_modules')],
   }
 
   return new Promise((resolve, reject) => {
@@ -150,7 +150,7 @@ async function compileSass(file, config) {
     // Load static assets
     const [favicon, script] = await Promise.all([
       readFile(resolvePath('favicon.png')),
-      readFile(resolvePath('script.js'))
+      readFile(resolvePath('script.js')),
     ])
 
     // Render markdown to html
@@ -194,7 +194,7 @@ async function compileSass(file, config) {
     })
 
     // Start the server and listen for requests
-    await new Promise(resolve => server.listen(3000, resolve))
+    await new Promise((resolve) => server.listen(3000, resolve))
     console.log('Listening on :3000')
   } catch (error) {
     console.log(error)

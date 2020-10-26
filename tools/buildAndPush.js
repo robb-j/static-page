@@ -22,10 +22,9 @@ const version = process.env.npm_package_version
 ;(async () => {
   try {
     // Get the registry to push to from the REGISTRY file
-    let registry = (await readFile(
-      path.join(__dirname, '..', 'REGISTRY'),
-      'utf8'
-    )).trim()
+    let registry = (
+      await readFile(path.join(__dirname, '..', 'REGISTRY'), 'utf8')
+    ).trim()
 
     // Generate tags for the image
     let tags = [`${registry}:${version}`]
@@ -34,11 +33,11 @@ const version = process.env.npm_package_version
     }
 
     // Reduce the tags into a statement
-    let tagsStmt = tags.map(tag => `-t ${tag}`).join(' ')
+    let tagsStmt = tags.map((tag) => `-t ${tag}`).join(' ')
 
     // Generate the command to run
     let cmd = [`docker build ${tagsStmt} .`]
-      .concat(tags.map(tag => `docker push ${tag}`))
+      .concat(tags.map((tag) => `docker push ${tag}`))
       .join(' && ')
 
     // Print the command we're running
