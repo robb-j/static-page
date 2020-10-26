@@ -14,31 +14,16 @@ const fs = require('fs')
 const path = require('path')
 const { exec } = require('child_process')
 
-const { promisify } = require('util')
-const readFile = promisify(fs.readFile)
-
-const version = process.env.npm_package_version
-
 ;(async () => {
   try {
-    // Get the registry to push to from the REGISTRY file
-    const registry = (
-      await readFile(path.join(__dirname, '..', 'REGISTRY'), 'utf8')
-    ).trim()
+    const pkg = require('../package.json')
+    const resolve = (file) => path.join(__dirname, '..', file)
 
-    // Generate tags for the image
-    const tags = [`${registry}:${version}`]
-    if (process.argv.includes('latest')) {
-      tags.push(`${registry}:latest`)
-    }
-
-    // Reduce the tags into a statement
-    const tagsStmt = tags.map((tag) => `-t ${tag}`).join(' ')
+    const registry = fs.readFileSync(resolve('REGISTRY'), 'utf8').trim()
 
     // Generate the command to run
-    const cmd = [`docker build ${tagsStmt} .`]
-      .concat(tags.map((tag) => `docker push ${tag}`))
-      .join(' && ')
+    const tag = `${registry}:v${pkg.version}`
+    const cmd = `docker build -t ${tag} && docker push ${tag}`
 
     // Print the command we're running
     console.log('Running:', cmd)
@@ -51,6 +36,7 @@ const version = process.env.npm_package_version
     proc.stdout.pipe(process.stdout)
     proc.stderr.pipe(process.stderr)
   } catch (error) {
-    console.log(`Error: ${error.message}`)
+    console.error(error)
+    process.exit(1)
   }
 })()
