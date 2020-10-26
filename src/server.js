@@ -25,7 +25,7 @@ const resolvePath = (...paths) => join(__dirname, ...paths)
 /** Search a hastscript tree to find a node which matches a predicate */
 function find(node, predicate) {
   if (!node.children) return
-  for (let child of node.children) {
+  for (const child of node.children) {
     if (predicate(child)) return child
 
     const nested = find(child, predicate)
