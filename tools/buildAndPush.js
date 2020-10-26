@@ -23,7 +23,7 @@ const { exec } = require('child_process')
 
     // Generate the command to run
     const tag = `${registry}:v${pkg.version}`
-    const cmd = `docker build -t ${tag} && docker push ${tag}`
+    const cmd = `docker build -t ${tag} . && docker push ${tag}`
 
     // Print the command we're running
     console.log('Running:', cmd)

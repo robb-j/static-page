@@ -142,6 +142,18 @@ async function compileSass(file, config) {
   })
 }
 
+// Shutdown the http server and exit the process
+// waits for 5s for services to stop routing traffic
+function shutdown(server) {
+  isTerminating = true
+  console.log('Exiting ...')
+
+  const delay = process.env.NODE_ENV === 'production' ? 5000 : 0
+  setTimeout(() => server.close(() => process.exit()), delay)
+}
+
+let isTerminating = false
+
 ;(async () => {
   try {
     // Load the markdown page as a virtual file
@@ -185,6 +197,12 @@ async function compileSass(file, config) {
           res.setHeader('Content-Type', 'application/javascript')
           return res.end(script)
         }
+        case '/healthz': {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.statusCode = isTerminating ? 503 : 200
+          res.end(JSON.stringify({ msg: isTerminating ? 'terminating' : 'ok' }))
+          return
+        }
         default: {
           res.statusCode = '404'
           res.setHeader('Content-Type', 'text/plain')
@@ -196,6 +214,9 @@ async function compileSass(file, config) {
     // Start the server and listen for requests
     await new Promise((resolve) => server.listen(3000, resolve))
     console.log('Listening on :3000')
+
+    process.on('SIGINT', () => shutdown(server))
+    process.on('SIGTERM', () => shutdown(server))
   } catch (error) {
     console.log(error)
   }

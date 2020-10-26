@@ -11,24 +11,28 @@ This repo is a [node.js](https://nodejs.org) app which compiles assets with
 
 <!-- toc-head -->
 
-## Table of Contents
+## Table of contents
 
-- [An example](#an-example)
-- [Customisation](#customisation)
+- [Table of Contents](#table-of-contents)
+- [Usage](#usage)
   - [Frontmatter](#frontmatter)
   - [Favicon](#favicon)
+  - [Healthcheck](#healthcheck)
 - [Development](#development)
   - [Setup](#setup)
   - [Commands](#commands)
   - [Code formatting](#code-formatting)
-- [Deployment](#deployment)
+- [Releasing](#releasing)
   - [Building the image](#building-the-image)
+- [Future work](#future-work)
 
 <!-- toc-tail -->
 
-## An example
+## Usage
 
-Say you want a quick holding page and you have a markdown file with content in, `content.md`.
+Say you want a quick holding page and you have a markdown file with content in.
+
+**content.md**
 
 ```md
 ---
@@ -44,6 +48,8 @@ Etiam porta sem malesuada magna mollis euismod. Etiam porta sem malesuada magna 
 
 Then you want to quickly deploy it using docker:
 
+> get the latest version [tag here](https://hub.docker.com/r/robbj/static-page/tags)
+
 ```bash
 docker run -it --rm \
   -v `pwd`/content.md:/app/page.md
@@ -51,9 +57,7 @@ docker run -it --rm \
   robb-j/static-page:1.1.0
 ```
 
-Then all you have to do is visit `http://localhost:3000`
-
-## Customisation
+Then visit `http://localhost:3000`
 
 ### Frontmatter
 
@@ -66,6 +70,15 @@ There are currently 3 values you can set in the frontmatter
 ### Favicon
 
 You can override the favicon by docker bind-mounting it to `/app/src/favicon.png`.
+
+### Healthcheck
+
+There is a healthcheck endpoint at `/healthz` which will return a http/200 if all is clear.
+If the server is terminating it will return a http/503.
+
+```
+GET /healthz
+```
 
 ## Development
 
@@ -103,7 +116,7 @@ You can manually run the formatter with `npm run prettier` if you want.
 Prettier is slightly configured in [.prettierrc.yml](/.prettierrc.yml)
 and also ignores files using [.prettierignore](/.prettierignore).
 
-## Deployment
+## Releasing
 
 ### Building the image
 
