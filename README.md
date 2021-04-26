@@ -52,9 +52,9 @@ Then you want to quickly deploy it using docker:
 
 ```bash
 docker run -it --rm \
-  -v `pwd`/content.md:/app/page.md
-  -p 3000:3000
-  robb-j/static-page:1.1.0
+  -p 3000:3000 \
+  -v `pwd`/content.md \
+  robbj/static-page:vX.Y.Z
 ```
 
 Then visit `http://localhost:3000`
