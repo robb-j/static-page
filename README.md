@@ -53,11 +53,15 @@ Then you want to quickly deploy it using docker:
 ```bash
 docker run -it --rm \
   -p 3000:3000 \
-  -v `pwd`/content.md \
+  -v `pwd`/content.md:/app/page.md \
   robbj/static-page:vX.Y.Z
 ```
 
 Then visit `http://localhost:3000`
+
+### Content
+
+Make sure to mount your markdown file at `/app/page.md` so the container knows what to render.
 
 ### Frontmatter
 
