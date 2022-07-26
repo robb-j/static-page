@@ -157,7 +157,7 @@ let isTerminating = false
 
 ;(async () => {
   try {
-    const { port = 3000, page = 'page.md' } = minimist(process.argv.slice(2))
+    const { port = 3000, page = 'page.md' } = minimist(process.argv)
 
     // Load static assets
     const [favicon, script] = await Promise.all([
