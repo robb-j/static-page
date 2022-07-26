@@ -15,6 +15,7 @@ const wrapInHtmlDoc = require('rehype-document')
 
 const Yaml = require('yaml')
 const Sass = require('sass')
+const minimist = require('minimist')
 
 const { formatMilliseconds } = require('format-ms')
 
@@ -156,8 +157,7 @@ let isTerminating = false
 
 ;(async () => {
   try {
-    // Load the markdown page as a virtual file
-    const page = vfile.readSync(resolvePath('../page.md'))
+    const { port = 3000, page = 'page.md' } = minimist(process.argv.slice(2))
 
     // Load static assets
     const [favicon, script] = await Promise.all([
@@ -167,7 +167,10 @@ let isTerminating = false
 
     // Render markdown to html
     process.stdout.write('Rendering html')
-    const [config, html, t1] = await renderMarkdown(page, frontmatter)
+    const [config, html, t1] = await renderMarkdown(
+      vfile.readSync(page),
+      frontmatter
+    )
     process.stdout.write(` (${formatMilliseconds(t1)})\n`)
 
     // Compile sass into css
@@ -212,8 +215,8 @@ let isTerminating = false
     })
 
     // Start the server and listen for requests
-    await new Promise((resolve) => server.listen(3000, resolve))
-    console.log('Listening on :3000')
+    await new Promise((resolve) => server.listen(port, resolve))
+    console.log('Listening on :' + port)
 
     process.on('SIGINT', () => shutdown(server))
     process.on('SIGTERM', () => shutdown(server))

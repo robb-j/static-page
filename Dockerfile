@@ -1,9 +1,11 @@
 # Use a node alpine image install packages and run the start script
-FROM node:12-alpine
+FROM node:16-alpine
+
+COPY --chown=node ["package*.json", "/app/"]
+USER node
 WORKDIR /app
-EXPOSE 3000
-COPY ["package*.json", "/app/"]
+
 ENV NODE_ENV production
-RUN npm ci
+RUN npm ci && npm cache clean --force
 COPY ["src", "src"]
-CMD ["node", "src/server.js"]
+ENTRYPOINT ["node", "src/server.js"]

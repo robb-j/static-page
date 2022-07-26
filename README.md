@@ -48,9 +48,9 @@ Etiam porta sem malesuada magna mollis euismod. Etiam porta sem malesuada magna 
 
 Then you want to quickly deploy it using docker:
 
-> get the latest version [tag here](https://hub.docker.com/r/robbj/static-page/tags)
+> get the latest version [tag here](https://github.com/robb-j/static-page/pkgs/container/static-page)
 
-```bash
+```sh
 docker run -it --rm \
   -p 3000:3000 \
   -v `pwd`/content.md:/app/page.md \
@@ -63,9 +63,9 @@ Then visit `http://localhost:3000`
 
 Make sure to mount your markdown file at `/app/page.md` so the container knows what to render.
 
-### Frontmatter
+### Front matter
 
-There are currently 3 values you can set in the frontmatter
+There are currently 3 values you can set in the front matter
 
 - `title` – **required** The title of the page
 - `subtitle` – An optional subtitle of the page
@@ -75,14 +75,21 @@ There are currently 3 values you can set in the frontmatter
 
 You can override the favicon by docker bind-mounting it to `/app/src/favicon.png`.
 
-### Healthcheck
+### Health check
 
-There is a healthcheck endpoint at `/healthz` which will return a http/200 if all is clear.
+There is a health check endpoint at `/healthz` which will return a http/200 if all is clear.
 If the server is terminating it will return a http/503.
 
 ```
 GET /healthz
 ```
+
+### Arguments
+
+You can pass these arguments to configure how the server runs:
+
+- `--port` - What port to run on (default: 3000)
+- `--page` - What markdown file to load, relative to `/app` (default: page.md)
 
 ## Development
 
@@ -94,7 +101,7 @@ This guide assumes you have the repo checked out and are on macOS, but equivalen
 
 ### Commands
 
-```bash
+```sh
 # Install npm packages
 npm i
 
@@ -130,7 +137,7 @@ push a new docker image with that version.
 This means that all images are [semantically versioned](https://semver.org/).
 The `:latest` docker tag is not used.
 
-```bash
+```sh
 # Deploy a new version of the CLI
 npm version # major | minor | patch
 git push --tags
