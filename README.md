@@ -13,11 +13,12 @@ This repo is a [node.js](https://nodejs.org) app which compiles assets with
 
 ## Table of contents
 
-- [Table of Contents](#table-of-contents)
 - [Usage](#usage)
-  - [Frontmatter](#frontmatter)
+  - [Content](#content)
+  - [Front matter](#front-matter)
   - [Favicon](#favicon)
-  - [Healthcheck](#healthcheck)
+  - [Health check](#health-check)
+  - [Arguments](#arguments)
 - [Development](#development)
   - [Setup](#setup)
   - [Commands](#commands)
@@ -103,10 +104,10 @@ This guide assumes you have the repo checked out and are on macOS, but equivalen
 
 ```sh
 # Install npm packages
-npm i
+npm install
 
 # Run the development server
-# -> It will compile the html & css and server them at localhost:3000
+# -> It will compile the html & css and serve them at localhost:3000
 # -> It watches for file changes using `nodemon` and restarts the server
 npm run dev
 
@@ -119,28 +120,27 @@ npm run gen-readme-toc
 This repo uses [Prettier](https://prettier.io/) to automatically format code to a consistent standard.
 It works using the [husky](https://www.npmjs.com/package/husky)
 and [lint-staged](https://www.npmjs.com/package/lint-staged) packages to
-automatically format code whenever code is commited.
-This means that code that is pushed to the repo is always formatted to a consistent standard.
+automatically format code whenever code is committed.
 
-You can manually run the formatter with `npm run prettier` if you want.
+You can manually run the formatter with `npm run format` if you want.
 
-Prettier is slightly configured in [.prettierrc.yml](/.prettierrc.yml)
-and also ignores files using [.prettierignore](/.prettierignore).
+Prettier is configured in [.prettierrc.yml](/.prettierrc.yml)
+and also ignores files using [.prettierignore](/.prettierignore)
+or those following a `// prettier-ignore` comment.
 
 ## Releasing
 
 ### Building the image
 
-This repo uses an npm `postversion` script to build, tag and push the docker image to dockerhub.
+This repo uses GitHub Actions to build, tag and push a container to GitHub packages.
 Use the `npm version` command to create a new version and it will build and
-push a new docker image with that version.
+push a new container with that version.
 This means that all images are [semantically versioned](https://semver.org/).
-The `:latest` docker tag is not used.
 
 ```sh
 # Deploy a new version of the CLI
 npm version # major | minor | patch
-git push --tags
+git push --follow-tags
 ```
 
 ## Future work

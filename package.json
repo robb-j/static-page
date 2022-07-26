@@ -10,7 +10,7 @@
   "scripts": {
     "coverage": "jest --coverage",
     "lint": "eslint src",
-    "prettier": "prettier --write '**/*.{js,json,css,md}'",
+    "format": "prettier --write '**/*.{js,json,css,md}'",
     "start": "node src/server.js",
     "test": "jest",
     "dev": "NODE_ENV=development nodemon -x 'node -r dotenv/config' --watch src src/server.js",
@@ -18,7 +18,7 @@
   },
   "keywords": [],
   "engines": {
-    "node": ">=8"
+    "node": ">=16"
   },
   "dependencies": {
     "@robb_j/md-toc": "^0.3.1",
