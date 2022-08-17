@@ -58,7 +58,9 @@ docker run -it --rm \
   robbj/static-page:vX.Y.Z
 ```
 
-Then visit `http://localhost:3000`
+Then visit `http://localhost:3000` and you'll have a page like this:
+
+![A screenshot showing the generated static page](/screenshot.png)
 
 ### Content
 
